@@ -32,6 +32,8 @@ dependencies:
   flutter_screenutil: ^4.0.4+1
   dio: ^4.0.0
   json_serializable: ^4.1.0
+  fijkplayer: ^0.8.7
+  wakelock: ^0.5.0+2
 
 dev_dependencies:
   flutter_test:

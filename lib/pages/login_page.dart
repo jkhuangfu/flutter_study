@@ -92,15 +92,15 @@ class _LoginPageState extends State<LoginPage> {
                           color: Colors.blue,
                           borderRadius: BorderRadius.circular(40),
                           onPressed: () async {
-                            // Navigator.pushNamed(context, 'home');
-                            Map<String, dynamic> data = await getResponse(
-                                'get',
-                                'http://127.0.0.1:3330/common/flutter',
-                                {'type': 1});
-                            print(data);
+                            Navigator.pushNamed(context, 'home');
+                            // Map<String, dynamic> data = await getResponse(
+                            //     'get',
+                            //     'http://127.0.0.1:3330/common/flutter',
+                            //     {'type': 1});
+                            // print(data);
 
-                            var demo = new Demo.fromJson(data);
-                            print(demo.result.data);
+                            // var demo = new Demo.fromJson(data);
+                            // print(demo.result.data);
                             // return null;
                             // print(parmas);
                             // if (parmas['userName'] == '') {
