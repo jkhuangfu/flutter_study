@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:fijkplayer/fijkplayer.dart';
 import 'package:flutter_study/widgets/pannel/video_pannel.dart';
 import 'package:flutter_study/widgets/tv_list.dart';
+import 'package:screen/screen.dart';
 import 'package:wakelock/wakelock.dart';
 
 class HomePage extends StatefulWidget {
@@ -64,7 +65,8 @@ class _HomePageState extends State<HomePage> {
   Future<void> initializePlayer() async {
     await player.setDataSource(url, autoPlay: true);
 
-    FijkVolume.setUIMode(FijkVolume.alwaysShowUI);
+    FijkVolume.setUIMode(FijkVolume.neverShowUI);
+
     setState(() {});
   }
 

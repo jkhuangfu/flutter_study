@@ -162,9 +162,12 @@ class _CustomFijkPanelState extends State<CustomFijkPanel> {
 
   _onVerticalDragUpdate(details, BuildContext context) async {
     bool isFullScreen = player.value.fullScreen;
-
     double currentY = details.globalPosition.dy;
     double centerPos; // 屏幕中心点横坐标
+    double height = widget.viewSize.height;
+    double dis = currentY - verticleStartPosY;
+    // 计算滑动比例
+    double resVol = dis / height;
     if (isFullScreen) {
       // 全屏状态
       centerPos = devH * 0.5;
@@ -172,51 +175,32 @@ class _CustomFijkPanelState extends State<CustomFijkPanel> {
       // 非全屏
       centerPos = devW * 0.5;
     }
-    double dis = currentY - verticleStartPosY;
+
     if (verticleStartPosX < centerPos) {
-      if (currentY > verticleStartPosY) {
-        print('全屏左半区域调节亮度---降低亮度');
-      } else {
-        print('全屏左半区域调节亮度---增加亮度');
-      }
-      // 当前屏幕亮度
       double brightness = await Screen.brightness;
-      Screen.setBrightness(brightness - dis);
+      double reBrightness = brightness - resVol;
+      if (reBrightness < 0) {
+        reBrightness = 0;
+      } else if (reBrightness > 1) {
+        reBrightness = 1;
+      }
+      Screen.setBrightness(reBrightness);
+      // 当前屏幕亮度
+      print('当前屏幕亮度-----------》$brightness');
     } else {
-      // double vol = await FijkVolume.getVol();
-      // if (currentY > verticleStartPosY) {
-      //   print('全屏右半区域调节音量---降低音量');
-      //   // print('------------当前音量$vol');
-      // } else {
-      //   print('全屏右边半区域调节音量---增加音量');
-      // }
-
-      double height = widget.viewSize.height;
-      double resVol = dis / height;
-      // print('------------------$currentY, $verticleStartPosY,$dis,$resVol');
-      // _playerSetVolume(dis);
-
-      await player.setVolume(0.4);
-      // double fvol = await FijkVolume.getVol();
-      // print('最终音量-------$fvol');
+      double vol = await FijkVolume.getVol();
+      double res = vol - resVol;
+      if (res < 0) {
+        res = 0;
+      } else if (res > 1) {
+        res = 1;
+      }
+      FijkVolume.setVol(res);
+      print('当前音量--------》$res');
     }
   }
 
 // ++++++++++++++++++++滑动处理逻辑end+++++++++++++++++++++++
-
-  /// 音量控制
-  void _playerSetVolume(double disY) async {
-    const MethodChannel _methodChannel =
-        const MethodChannel('flutter_forbidshot');
-    double vol = await FijkVolume.getVol();
-    // print('------$disY----------------,-----$vol,---->${vol + disY * -1}');
-    // await player.setVolume(vol + disY * -1);
-
-    _methodChannel.invokeMethod('setVolume', {"volume": vol + disY * -1});
-    double fvol = await FijkVolume.getVol();
-    print('最终音量-------$fvol');
-    // if (isFullScreen) {}
-  }
 
   void _playerValueChanged() {
     FijkValue value = player.value;
