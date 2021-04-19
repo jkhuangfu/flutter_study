@@ -1,7 +1,9 @@
+import 'dart:math';
 import 'dart:ui';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:fijkplayer/fijkplayer.dart';
+import 'package:flutter_study/widgets/pannel/video_pannel.dart';
 import 'package:flutter_study/widgets/tv_list.dart';
 import 'package:wakelock/wakelock.dart';
 
@@ -109,6 +111,23 @@ class _HomePageState extends State<HomePage> {
                       width: MediaQuery.of(context).size.width,
                       height: 260.00,
                       player: player,
+                      panelBuilder: (FijkPlayer player,
+                          FijkData data,
+                          BuildContext context,
+                          Size viewSize,
+                          Rect texturePos) {
+                        return CustomFijkPanel(
+                            player: player,
+                            // 传递 context 用于左上角返回箭头关闭当前页面，不要传递错误 context，
+                            // 如果要点击箭头关闭当前的页面，那必须传递当前页面的根 context
+                            buildContext: context,
+                            viewSize: viewSize,
+                            texturePos: texturePos,
+                            // 是否显示顶部，如果要显示顶部标题栏 + 返回键，那么就传递 true
+                            showTopCon: true,
+                            // 标题 当前页面顶部的标题部分
+                            playerTitle: "标题");
+                      },
                       color: Colors.black,
                       fit: FijkFit.ar16_9)
                   : Container(
